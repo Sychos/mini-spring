@@ -1,6 +1,9 @@
 package com.madg.factory;
 
 import com.madg.BeanDefinition;
+import com.madg.BeanProperties;
+
+import java.lang.reflect.Field;
 
 /**
  * @Author:Madg
@@ -9,21 +12,27 @@ import com.madg.BeanDefinition;
 public class AutoWireCapableBeanFactory extends AbstrctBeanFactory
 {
     @Override
-    protected Object doCreateBean(BeanDefinition beanDefinition)
+    protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception
     {
-        try
+        Object bean=createBeanInstance(beanDefinition);
+        applyProperties(bean,beanDefinition);
+        return bean;
+    }
+
+
+    protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception
+    {
+        return beanDefinition.getBeanClass().newInstance();
+    }
+
+    protected void applyProperties(Object bean,BeanDefinition beanDefinition) throws NoSuchFieldException, IllegalAccessException
+    {
+        for (BeanProperties.Entity entity:beanDefinition.getProperties().getProperties())
         {
-            Object bean=beanDefinition.getBeanClass().newInstance();
-            return bean;
+            //get all field ,contains:public,protected,private
+            Field declaredField=bean.getClass().getDeclaredField(entity.getName());
+            declaredField.setAccessible(true);
+            declaredField.set(bean,entity.getValue());
         }
-        catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
-        catch (InstantiationException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

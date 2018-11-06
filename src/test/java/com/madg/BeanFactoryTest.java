@@ -14,14 +14,23 @@ public class BeanFactoryTest
 {
 
     @Test
-    public void test()
+    public void test() throws Exception
     {
         //1.初始化factory
         IBeanFactory factory=new AutoWireCapableBeanFactory();
 
-        //2.注入beanDefinition
+        //2.beanDefinition and properties
+        BeanProperties properties=new BeanProperties();
+
+        BeanProperties.Entity property;
+
+        property=new BeanProperties.Entity("name","hello world");
+        properties.addProperty(property);
+
         BeanDefinition beanDefinition=new BeanDefinition();
         beanDefinition.setBeanClassName("com.madg.HelloWorldService");
+        beanDefinition.setProperties(properties);
+        //
         factory.registerBeanDefinition("beanHelloWorld",beanDefinition);
 
         //3.获取

@@ -13,7 +13,7 @@ public abstract class AbstrctBeanFactory implements IBeanFactory
 {
     private Map<String, BeanDefinition> map=new ConcurrentHashMap<>();
 
-    protected abstract Object doCreateBean(BeanDefinition beanDefinition);
+    protected abstract Object doCreateBean(BeanDefinition beanDefinition) throws Exception;
 
     @Override
     public Object getBean(String name)
@@ -22,7 +22,7 @@ public abstract class AbstrctBeanFactory implements IBeanFactory
     }
 
     @Override
-    public void registerBeanDefinition(String name,BeanDefinition beanDefinition)
+    public void registerBeanDefinition(String name,BeanDefinition beanDefinition) throws Exception
     {
         Object object=doCreateBean(beanDefinition);
         beanDefinition.setBean(object);

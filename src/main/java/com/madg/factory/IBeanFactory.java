@@ -9,5 +9,5 @@ import com.madg.BeanDefinition;
 public interface IBeanFactory
 {
     Object getBean(String name);
-    void registerBeanDefinition(String name, BeanDefinition beanDefinition);
+    void registerBeanDefinition(String name, BeanDefinition beanDefinition) throws Exception;
 }

@@ -6,8 +6,13 @@ package com.madg;
  */
 public class HelloWorldService
 {
+    private String name;
+    private void setName(String name)
+    {
+        this.name=name;
+    }
     public void helloWorld()
     {
-        System.out.println("Hello World");
+        System.out.println(name);
     }
 }
