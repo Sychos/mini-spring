@@ -13,6 +13,7 @@ public class BeanDefinition
 
     public BeanDefinition()
     {
+        properties=new BeanProperties();
     }
 
     public Class getBeanClass()

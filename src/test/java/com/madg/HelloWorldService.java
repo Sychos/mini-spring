@@ -7,10 +7,16 @@ package com.madg;
 public class HelloWorldService
 {
     private String name;
-    private void setName(String name)
+    public void setName(String name)
     {
         this.name=name;
     }
+
+    public String getName()
+    {
+        return name;
+    }
+
     public void helloWorld()
     {
         System.out.println(name);

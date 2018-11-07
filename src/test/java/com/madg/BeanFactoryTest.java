@@ -2,9 +2,12 @@ package com.madg;
 
 import com.madg.factory.AutoWireCapableBeanFactory;
 import com.madg.factory.IBeanFactory;
+import com.madg.io.UrlResourceLoader;
+import com.madg.xml.XmlBeanDefinitionReader;
 import org.junit.Test;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Map;
 
 /**
  * @Author:Madg
@@ -16,25 +19,19 @@ public class BeanFactoryTest
     @Test
     public void test() throws Exception
     {
-        //1.初始化factory
+        //1.读取配置
+        IBeanDefinitionReader reader=new XmlBeanDefinitionReader(new UrlResourceLoader());
+        reader.loadBeanDefinitions("xmlNormal.xml");
+
+        //2.初始化BneaFactory,并注册bean
         IBeanFactory factory=new AutoWireCapableBeanFactory();
+        for (Map.Entry<String,BeanDefinition> beanDefinitionEntry:((XmlBeanDefinitionReader) reader).getRegister().entrySet())
+        {
+            factory.registerBeanDefinition(beanDefinitionEntry.getKey(),beanDefinitionEntry.getValue());
+        }
 
-        //2.beanDefinition and properties
-        BeanProperties properties=new BeanProperties();
-
-        BeanProperties.Entity property;
-
-        property=new BeanProperties.Entity("name","hello world");
-        properties.addProperty(property);
-
-        BeanDefinition beanDefinition=new BeanDefinition();
-        beanDefinition.setBeanClassName("com.madg.HelloWorldService");
-        beanDefinition.setProperties(properties);
-        //
-        factory.registerBeanDefinition("beanHelloWorld",beanDefinition);
-
-        //3.获取
-        HelloWorldService service= (HelloWorldService) factory.getBean("beanHelloWorld");
+        //3.获得Bean
+        HelloWorldService service= (HelloWorldService) factory.getBean("helloWorldService");
         service.helloWorld();
     }
 }
