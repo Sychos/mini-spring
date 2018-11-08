@@ -40,7 +40,7 @@ public class AutoWireCapableBeanFactory extends AbstrctBeanFactory
                 BeanReference beanReference= (BeanReference) value;
                 value=getBean(beanReference.getName());
             }
-            declaredField.set(bean,entity.getValue());
+            declaredField.set(bean,value);
         }
     }
 }

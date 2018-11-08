@@ -7,18 +7,21 @@ package com.madg;
 public class HelloWorldService
 {
     private String name;
+    private OutputService outputService;
+
+    public void setOutputService(OutputService outputService)
+    {
+        this.outputService = outputService;
+    }
+
     public void setName(String name)
     {
         this.name=name;
     }
 
-    public String getName()
-    {
-        return name;
-    }
 
     public void helloWorld()
     {
-        System.out.println(name);
+        outputService.output(name);
     }
 }

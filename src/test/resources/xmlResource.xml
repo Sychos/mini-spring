@@ -10,8 +10,13 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/tx ">
 
+    <bean name="outputService" class="com.madg.OutputService">
+        <property name="helloWorldService" ref="helloWorldService"></property>
+    </bean>
+
     <bean name="helloWorldService" class="com.madg.HelloWorldService">
         <property name="name" value="Hello World!"></property>
+        <property name="outputService" ref="outputService"></property>
     </bean>
 
 </beans>

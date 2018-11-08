@@ -19,7 +19,7 @@ public class BeanFactoryTest
     @Test
     public void test() throws Exception
     {
-        //1.读取配置
+        //1.读取配置，并写入到register中
         IBeanDefinitionReader reader=new XmlBeanDefinitionReader(new UrlResourceLoader());
         reader.loadBeanDefinitions("xmlNormal.xml");
 
@@ -33,5 +33,27 @@ public class BeanFactoryTest
         //3.获得Bean
         HelloWorldService service= (HelloWorldService) factory.getBean("helloWorldService");
         service.helloWorld();
+    }
+
+    @Test
+    public void testPreInstantiate() throws Exception
+    {
+        //1.读取配置
+        IBeanDefinitionReader reader=new XmlBeanDefinitionReader(new UrlResourceLoader());
+        reader.loadBeanDefinitions("xmlResource.xml");
+
+        //2.初始化BeanFactory,并注册bean
+        IBeanFactory factory=new AutoWireCapableBeanFactory();
+        for (Map.Entry<String,BeanDefinition> beanDefinitionEntry:((XmlBeanDefinitionReader) reader).getRegister().entrySet())
+        {
+            factory.registerBeanDefinition(beanDefinitionEntry.getKey(),beanDefinitionEntry.getValue());
+        }
+
+        //3.实例化bean
+        ((AutoWireCapableBeanFactory) factory).preInstantiateSingletons();
+
+        //4.获得bean
+        HelloWorldService helloWorldService= (HelloWorldService) factory.getBean("helloWorldService");
+        helloWorldService.helloWorld();
     }
 }
