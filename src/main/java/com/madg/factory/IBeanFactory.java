@@ -8,6 +8,6 @@ import com.madg.BeanDefinition;
  */
 public interface IBeanFactory
 {
-    Object getBean(String name);
+    Object getBean(String name) throws Exception;
     void registerBeanDefinition(String name, BeanDefinition beanDefinition) throws Exception;
 }

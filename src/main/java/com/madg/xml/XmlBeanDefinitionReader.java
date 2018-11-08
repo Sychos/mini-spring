@@ -3,6 +3,7 @@ package com.madg.xml;
 import com.madg.AbstractBeanDefinitionReader;
 import com.madg.BeanDefinition;
 import com.madg.BeanProperties;
+import com.madg.BeanReference;
 import com.madg.io.IResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -83,7 +84,20 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader
                 Element propertyEle = (Element) node;
                 String name = propertyEle.getAttribute("name");
                 String value = propertyEle.getAttribute("value");
-                beanDefinition.getProperties().addProperty(new BeanProperties.Entity(name,value));
+                if (value!=null && value.length()>0)
+                {
+                    beanDefinition.getProperties().addProperty(new BeanProperties.Entity(name,value));
+                }
+                else
+                {
+                    String ref=propertyEle.getAttribute("ref");
+                    if (ref==null || ref.length()==0)
+                    {
+                        throw new IllegalArgumentException("Configuration Problem:<property> element for property '"+name+"'must specify a ref or value");
+                    }
+                    BeanReference reference=new BeanReference(ref);
+                    beanDefinition.getProperties().addProperty(new BeanProperties.Entity(name,reference));
+                }
             }
         }
     }
